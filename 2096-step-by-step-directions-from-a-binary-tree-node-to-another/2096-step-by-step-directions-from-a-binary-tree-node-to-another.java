@@ -14,48 +14,60 @@
  * }
  */
 class Solution {
-    String ans = "";
-    
-    public String getDirections(TreeNode root, int startValue, int destValue) {
-        StringBuilder pathToStart = new StringBuilder();
-        StringBuilder pathToDest = new StringBuilder();
-        
-        findPath(root, startValue, pathToStart);
-        findPath(root, destValue, pathToDest);
-        
-        int i = 0;
-        while (i < pathToStart.length() && i < pathToDest.length() && pathToStart.charAt(i) == pathToDest.charAt(i)) {
-            i++;
+   
+    public TreeNode Lca(TreeNode root, int s , int d){
+        if(root==null){
+            return null;
         }
-        StringBuilder result = new StringBuilder();
-        for (int j = i; j < pathToStart.length(); j++) {
-            result.append('U');
+        if(root.val == s|| root.val == d){
+            return root;
         }
-        result.append(pathToDest.substring(i));
+        TreeNode lt = Lca(root.left, s, d);
+        TreeNode rt = Lca(root.right, s,d);
         
-        return result.toString();
+        if(lt != null && rt != null){
+            return root;
+        }
+        return lt==null ?rt:lt;
     }
-    
-    public boolean findPath(TreeNode node, int value, StringBuilder path) {
-        if (node == null) {
+    public boolean findPath(TreeNode root, int target, StringBuilder locals){
+        if(root==null){
             return false;
         }
-        if (node.val == value) {
+        if(root.val == target){
             return true;
         }
         
-        path.append('L');
-        if (findPath(node.left, value, path)) {
+        locals.append('L');
+        if(findPath(root.left, target, locals)){
             return true;
         }
-        path.deleteCharAt(path.length() - 1);
+        locals.deleteCharAt(locals.length()-1);
         
-        path.append('R');
-        if (findPath(node.right, value, path)) {
+        locals.append('R');
+        if(findPath(root.right, target, locals)){
             return true;
         }
-        path.deleteCharAt(path.length() - 1);
-        
+        locals.deleteCharAt(locals.length()-1);
         return false;
+        
     }
+    public String getDirections(TreeNode root, int startValue, int destValue) {
+        TreeNode lca = Lca(root, startValue, destValue);
+        
+        StringBuilder localleft = new StringBuilder();
+        StringBuilder localright = new StringBuilder();
+        
+        findPath(lca, startValue, localleft);
+        findPath(lca, destValue, localright);
+        
+        StringBuilder ans = new StringBuilder();
+        for(int i = 0; i<localleft.length(); i++){
+            ans.append('U');
+        }
+        ans.append(localright);
+        return ans.toString();
+        
+    }
+     
 }
