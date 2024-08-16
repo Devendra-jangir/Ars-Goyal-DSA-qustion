@@ -10,14 +10,22 @@
  */
 class Solution {
     public ListNode middleNode(ListNode head) {
-        ListNode slow = head;
-        ListNode fast = head;
+        // Step 1: Count the total number of nodes in the linked list
+        ListNode temp = head;
+        int n = 0;
         
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
+        while (temp != null) {
+            n++;
+            temp = temp.next;
         }
         
-        return slow;
+        temp = head;
+        int middle = n / 2;
+        
+        for (int i = 0; i < middle; i++) {
+            temp = temp.next;
+        }
+        
+        return temp;
     }
 }
