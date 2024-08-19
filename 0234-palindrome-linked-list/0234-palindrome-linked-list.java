@@ -15,27 +15,6 @@ class Solution {
         }
 
         // Step 1: Find the middle of the list
-        ListNode middle = findMiddle(head);
-
-        // Step 2: Reverse the second half of the list
-        ListNode reversedSecondHalf = reverse(middle);
-
-        // Step 3: Compare the first half with the reversed second half
-        ListNode p1 = head;
-        ListNode p2 = reversedSecondHalf;
-        
-        while (p2 != null) {
-            if (p1.val != p2.val) {
-                return false;
-            }
-            p1 = p1.next;
-            p2 = p2.next;
-        }
-
-        return true;
-    }
-
-    private ListNode findMiddle(ListNode head) {
         ListNode slow = head;
         ListNode fast = head;
         
@@ -44,10 +23,24 @@ class Solution {
             fast = fast.next.next;
         }
 
-        return slow;
+        // Step 2: Reverse the second half of the list
+        ListNode secondHalf = reverse(slow);
+        ListNode firstHalf = head;
+
+        // Step 3: Compare the first half with the reversed second half
+        while (secondHalf != null) {
+            if (firstHalf.val != secondHalf.val) {
+                return false;
+            }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        return true;
     }
 
-    private ListNode reverse(ListNode head) {
+    // Function to reverse a linked list
+    public ListNode reverse(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
         
