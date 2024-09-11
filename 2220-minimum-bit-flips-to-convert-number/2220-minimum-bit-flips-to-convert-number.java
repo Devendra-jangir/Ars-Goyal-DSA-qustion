@@ -3,7 +3,6 @@ class Solution {
         String s1 = Integer.toBinaryString(start);
         String s2 = Integer.toBinaryString(goal);
 
-        // Pad the binary strings with leading zeros to make them of equal length
         while (s1.length() < s2.length()) {
             s1 = "0" + s1;
         }
